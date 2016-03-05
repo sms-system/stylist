@@ -1,0 +1,19 @@
+_alias(a)
+  a = ''+a+''
+  ALIASES[a] ? ALIASES[a] : a
+  
+_args()
+  for a, i in 0 0 0 1
+    if length(arguments) == i
+      arguments[i] = arguments[a]
+  arguments
+
+_fill()
+  attr = shift(arguments)
+  if _ in arguments
+    pos = _args(arguments)
+    for position, i in top right bottom left
+      if pos[i] != _
+        {attr}-{position}  pos[i]
+  else
+    {attr} arguments

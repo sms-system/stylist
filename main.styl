@@ -1,0 +1,77 @@
+@import 'vars.styl'
+@import 'func.styl'
+@import 'helpers.styl'
+
+// Get full path for asset file
+asset(path)
+  ASSETS_PATH + path
+
+// @extends placeholder selectors
+implements()
+  arguments = unquote($ + join(' $', arguments))
+  @extends {arguments}
+
+// Allows skip some parameters with _ sign
+margin()
+  _fill margin arguments
+padding()
+  _fill padding arguments
+
+scale()
+  transform unquote('scale' + arguments)
+
+font()
+  font-family arguments
+
+import-font(name, fontName=, weight=, style=)
+  @font-face
+    fileName = 'font/' + name
+    font-family fontName ?= name
+    font-weight: weight ?= normal
+    font-style: style ?= normal
+    src url(asset(fileName + '.woff2')) format("woff2"),
+      url(asset(fileName + '.woff')) format("woff"),
+      url(asset(fileName + '.ttf')) format("truetype")
+
+bg(color, image=, position=, repeat=)
+  if color == none
+    background none
+  else
+    background-color color
+    if image
+      background-image url(asset('img/' + image))
+    if position
+      position = 50% 0 if position == top
+      position = 50% 50% if position == middle
+      position = 50% 100% if position == bottom
+      background-position position
+    if repeat
+      repeat = no-repeat if repeat == no
+      repeat = repeat-x if repeat == x
+      repeat = repeat-y if repeat == y
+      background-repeat repeat
+
+transition()
+  transitions = ''
+  time = .2
+  timingFunction = TIMING_FUNCTIONS['ease']
+  time = shift(arguments) if arguments[0] is a 'unit'
+  timingFunction = TIMING_FUNCTIONS[shift(arguments)] if TIMING_FUNCTIONS[arguments[0]]
+  tempTime = null
+  tempTimingFunction = null
+  for attr in arguments
+    attr = _alias(attr)
+    if attr is a 'unit'
+      tempTime = attr
+    else if TIMING_FUNCTIONS[attr]
+      tempTimingFunction = TIMING_FUNCTIONS[attr]
+    else
+      transitions = transitions + ', ' if transitions
+      transitions = transitions + '%ss %s %s' % (
+        (tempTime ? tempTime : time)\
+        unquote(attr)\
+        unquote(tempTimingFunction ? tempTimingFunction : timingFunction)
+      )
+      tempTime = null if tempTime
+      tempTimingFunction = null if tempTimingFunction
+  transition unquote(transitions)
