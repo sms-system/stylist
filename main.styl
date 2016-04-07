@@ -23,12 +23,12 @@ scale()
 font()
   font-family arguments
 
-import-font(name, fontName=, weight=, style=)
+import-font(name, fontName=, weight=normal, style=normal)
   @font-face
     fileName = 'font/' + name
     font-family fontName ?= name
-    font-weight: weight ?= normal
-    font-style: style ?= normal
+    font-weight: weight
+    font-style: style
     src url(asset(fileName + '.woff2')) format("woff2"),
       url(asset(fileName + '.woff')) format("woff"),
       url(asset(fileName + '.ttf')) format("truetype")
