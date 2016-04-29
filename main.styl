@@ -1,6 +1,7 @@
 @import 'vars.styl'
 @import 'func.styl'
 @import 'helpers.styl'
+@import 'initial.styl'
 
 // Get full path for asset file
 asset(path)
@@ -16,6 +17,16 @@ margin()
   _fill margin arguments
 padding()
   _fill padding arguments
+  
+position(type, top=_, left=_, right=_, bottom=_)
+  position type
+  top top if top!=_
+  left left if left!=_
+  right right if right!=_
+  bottom bottom if bottom!=_
+
+xy(type, x, y)
+  {type} y _ _ x
 
 scale()
   transform unquote('scale' + arguments)
@@ -75,3 +86,57 @@ transition()
       tempTime = null if tempTime
       tempTimingFunction = null if tempTimingFunction
   transition unquote(transitions)
+
+overflow(type, clearfixParam=normal)
+  if type == clearfix
+    if clearfixParam == normal
+      &:after
+        content ''
+        visibility hidden
+        display block
+        clear both
+        height 0
+    if clearfixParam == full
+      display table
+      *zoom 1
+      &:after
+        display block
+        content '1 1 1 1 1 1 1 1 1 1 1' /*Op12+*/
+        font-size 1px
+        line-height 0
+        word-spacing 99in
+        overflow hidden
+    if clearfixParam == lite
+      overflow hidden
+  else
+    overflow type
+
+modal(selector=modal, overlay=rgba(0,0,0,.8), margin=20px, z-index=5)
+  #{selector}
+    transition opacity
+    implements vac
+    position fixed 0 0 0 0
+    overflow auto
+    background-color overlay
+    opacity 0
+    z-index z-index
+    &.shown
+      opacity 1
+      .modal-box
+        scale 1
+
+    .modal-box
+      transition .3 easeOutBack transform
+      implements vac-box
+      weight 100px
+      text-align center
+      padding margin
+      scale .8
+
+    .{selector}
+      text-align left
+      margin 0 auto
+      {block}
+      
+  /body.modal-locked
+    overflow hidden

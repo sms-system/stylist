@@ -3,31 +3,11 @@ $nul
   margin: 0;
   padding: 0;
 
-$clearfix
-  &:after
-    content ''
-    visibility hidden
-    display block
-    clear both
-    height 0
-  $full
-    display table
-    *zoom 1
-    &:after
-      display block
-      content '1 1 1 1 1 1 1 1 1 1 1' /*Op12+*/
-      font-size 1px
-      line-height 0
-      word-spacing 99in
-      overflow hidden
-
-$vac
-  &:after
-    content ''
-    vertical-align middle
-    display inline-block
-    height 100%
-    width 0
+$vac-box
+  box-sizing border-box
+  display inline-block
+  vertical-align: middle;
+  width 99.9%
 
 $noOutline
   &:focus

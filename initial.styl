@@ -1,0 +1,61 @@
+STICKY_FOOTER_HEIGHT = 100px
+
+init(
+  bgImg=,
+  bgColor=,
+  selector=,
+  sticky-footer=,
+  inputs-and-buttons=true
+)
+  html
+    bg #fff
+  body{selector}
+    margin 0
+    {block}
+
+  if inputs-and-buttons
+    input, button
+      implements noOutline
+      box-sizing border-box
+
+  if sticky-footer == normal
+    html
+      position relative
+      min-height 100%
+    body{selector}
+      margin-bottom STICKY_FOOTER_HEIGHT
+  else if sticky-footer == hack
+    html, body{selector}
+      height 100%
+    body{selector}
+      display table
+      width 100%
+      
+  if bgImg
+    body
+      position: relative
+      &:before
+        background url(bgImg) no-repeat center center
+        background-color bgColor if bgColor
+        background-size cover
+        content ' '
+        height 100%
+        left 0
+        position fixed
+        top 0
+        width 100%
+        will-change transform
+        z-index -1
+
+sticky-footer()
+  position absolute _ 0 _ 0
+  width 100%
+  height STICKY_FOOTER_HEIGHT
+
+sticky-footer-hack-content()
+  display table-row
+  height 100%
+
+sticky-footer-hack()
+  display table-row
+  height 1px
